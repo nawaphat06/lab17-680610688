@@ -1,3 +1,15 @@
+// 4.3
+interface Instructor {
+  name: string;
+  email: string;
+}
+export type { Instructor };
+
+interface StudentEmail {
+  address: string;
+}
+export type { StudentEmail };
+
 interface Student {
   studentId: string;
   firstName: string;
@@ -9,15 +21,15 @@ interface Student {
 }
 export type { Student };
 
-interface StudentEmail {
-  address: string;
-}
-export type { StudentEmail };
-
+// 4.3
 interface Course {
   courseId: string;
   courseTitle: string;
-  instructors: string[];
+  instructors: Instructor[];
+  program: "CPE" | "ISNE";
+  semester: "1" | "2" | "3";
+  description?: string;
+  notifyByEmail: boolean;
 }
 export type { Course };
 
@@ -28,9 +40,6 @@ interface Enrollment {
 }
 export type { Enrollment };
 
-// ผู้ใช้ระบบ (สำหรับ Login) — โปรเจกต์นี้ตัดระบบ Login ออกทั้งหมด (ดู
-// mock-data.ts: CURRENT_STUDENT_ID) type นี้เลยไม่ได้ใช้งานจริงในแอป ADMIN นี้
-// เก็บไว้เผื่ออ้างอิงตอนต่อ Backend จริง
 interface User {
   username: string;
   password: string;
