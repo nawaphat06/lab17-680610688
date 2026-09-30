@@ -4,7 +4,7 @@ import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
 // 1.2
 import { zodResolver } from "@hookform/resolvers/zod";
 // 2.1, 4.1
-import { Plus, X, RotateCcw } from "lucide-react";
+import { PlusCircle, X, RotateCcw } from "lucide-react";
 import { useEnrollmentStore } from "@/lib/enrollment-store";
 // 1.1, 1.2
 import {
@@ -37,8 +37,8 @@ import { Label } from "@/components/ui/label";
 const defaultValues: CourseFormValues = {
   courseId: "",
   courseTitle: "",
-  program: "" as any,
-  semester: "" as any,
+  program: undefined as any,
+  semester: undefined as any,
   description: "",
   instructors: [{ name: "", email: "" }],
   notifyByEmail: false,
@@ -49,12 +49,9 @@ export function AddNewCourseDialog() {
   const courses = useEnrollmentStore((s) => s.courses);
   const addCourse = useEnrollmentStore((s) => s.addCourse);
 
-  // 1.1, 1.2
-  const courseFormSchema = createCourseFormSchema(courses);
-
   // 1.2
   const form = useForm<CourseFormValues>({
-    resolver: zodResolver(courseFormSchema),
+    resolver: zodResolver(createCourseFormSchema(courses)),
     mode: "onBlur",
     defaultValues,
   });
@@ -94,7 +91,7 @@ export function AddNewCourseDialog() {
     setOpen(false);
   };
 
-  //4..2
+  // 4.2
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
     if (!isOpen) {
@@ -105,7 +102,7 @@ export function AddNewCourseDialog() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger render={<Button />}>
-        <Plus className="h-4 w-4 mr-1.5" />
+        <PlusCircle className="h-4 w-4 mr-1.5" />
         เพิ่มวิชา
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
@@ -130,7 +127,7 @@ export function AddNewCourseDialog() {
               </Label>
               <Input
                 id="courseId"
-                placeholder="261305"
+                placeholder="เช่น 261305"
                 inputMode="numeric"
                 {...register("courseId")}
                 aria-invalid={!!errors.courseId}
@@ -147,7 +144,7 @@ export function AddNewCourseDialog() {
               )}
             </div>
 
-            {/* 1.2 1.3 */}
+            {/* 1.2, 1.3 */}
             <div className="space-y-1.5">
               <Label
                 htmlFor="courseTitle"
@@ -157,7 +154,7 @@ export function AddNewCourseDialog() {
               </Label>
               <Input
                 id="courseTitle"
-                placeholder="Mobile Application Development"
+                placeholder="เช่น Mobile Application Development"
                 {...register("courseTitle")}
                 aria-invalid={!!errors.courseTitle}
                 className={
@@ -173,7 +170,6 @@ export function AddNewCourseDialog() {
               )}
             </div>
           </div>
-
           {/* 3.1 */}
           <div className="space-y-1.5">
             <Label className={errors.program ? "text-destructive" : ""}>
@@ -213,7 +209,6 @@ export function AddNewCourseDialog() {
               </p>
             )}
           </div>
-
           {/* 3.2 */}
           <div className="space-y-1.5">
             <Label className={errors.semester ? "text-destructive" : ""}>
@@ -291,7 +286,6 @@ export function AddNewCourseDialog() {
               </p>
             )}
           </div>
-
           {/* 3.3 */}
           <div className="space-y-1.5">
             <Label
@@ -334,7 +328,6 @@ export function AddNewCourseDialog() {
               </p>
             )}
           </div>
-
           {/* 2.1, 2.2, 2.3 */}
           <div className="space-y-2">
             <div>
@@ -351,9 +344,8 @@ export function AddNewCourseDialog() {
                   <span className="text-sm font-medium w-4">{index + 1}.</span>
 
                   <div className="flex-1">
-                    {/* 2.2 */}
                     <Input
-                      placeholder="ชื่อผู้สอน"
+                      placeholder="กรอกชื่อผู้สอน"
                       {...register(`instructors.${index}.name`)}
                       aria-invalid={!!errors.instructors?.[index]?.name}
                       className={
@@ -370,7 +362,6 @@ export function AddNewCourseDialog() {
                   </div>
 
                   <div className="flex-1">
-                    {/* 2.2 */}
                     <Input
                       placeholder="name@cmu.ac.th"
                       {...register(`instructors.${index}.email`)}
@@ -388,7 +379,6 @@ export function AddNewCourseDialog() {
                     )}
                   </div>
 
-                  {/* 2.1 */}
                   <Button
                     type="button"
                     variant="ghost"
@@ -402,14 +392,12 @@ export function AddNewCourseDialog() {
               </div>
             ))}
 
-            {/* 2.3 */}
             {errors.instructors?.root && (
               <p className="text-xs text-destructive">
                 {errors.instructors.root.message}
               </p>
             )}
 
-            {/* 2.1 */}
             <Button
               type="button"
               variant="outline"
@@ -417,10 +405,9 @@ export function AddNewCourseDialog() {
               disabled={fields.length >= 3}
               onClick={() => append({ name: "", email: "" })}
             >
-              <Plus className="mr-1 h-3.5 w-3.5" /> เพิ่มผู้สอน
+              <PlusCircle className="mr-1 h-3.5 w-3.5" /> เพิ่มผู้สอน
             </Button>
           </div>
-
           {/* 3.4 */}
           <div className="flex items-center justify-between rounded-lg border p-3">
             <div>
@@ -440,9 +427,8 @@ export function AddNewCourseDialog() {
               )}
             />
           </div>
-
           <div className="flex justify-end gap-2 pt-2 border-t">
-            {/*4.1 */}
+            {/* 4.1 */}
             <Button
               type="button"
               variant="outline"
