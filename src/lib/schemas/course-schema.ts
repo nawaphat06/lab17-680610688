@@ -73,7 +73,7 @@ export const createCourseFormSchema = (existingCourses: Course[]) =>
       ),
 
     // 3.4
-    notifyByEmail: z.boolean().default(false),
+    notifyByEmail: z.boolean(),
   });
 
 // 1.1
